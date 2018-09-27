@@ -6,109 +6,84 @@ services:
   elasticsearch_master1:
     image: elasticsearch:latest
     ports:
-      - "9201:9201"
-      - "9301:9301"
+      - ${MASTER1_HTTP_PORT}:${MASTER1_HTTP_PORT}
+      - ${MASTER1_TRANSPORT_TCP_PORT}:${MASTER1_TRANSPORT_TCP_PORT}
     environment:
-      - CLUSTER_NAME=es-cluster
-      - NODE_NAME=node-master1
+      - CLUSTER_NAME=${CLUSTER_NAME}
+      - NODE_NAME=${MASTER1_NODE_NAME}
       - NODE_MASTER=true
       - NODE_DATA=false
-      - HTTP_PORT=9201
-      - TRANSPORT_TCP_PORT=9301
-      - DISCOVERY_PING_UNICAST_HOSTS=192.168.71.188:9301,192.168.71.188:9302
-      - DISCOVERY_MINIMUM_MASTER_NODES=2
-    command: /home/elasticsearch/elasticsearch-6.4.0/bin/elasticsearch
+      - HTTP_PORT=${MASTER1_HTTP_PORT}
+      - TRANSPORT_TCP_PORT=${MASTER1_TRANSPORT_TCP_PORT}
+      - DISCOVERY_PING_UNICAST_HOSTS=${DISCOVERY_PING_UNICAST_HOSTS}
+      - DISCOVERY_MINIMUM_MASTER_NODES=${DISCOVERY_MINIMUM_MASTER_NODES}
+    command: ${ELASTICSEARCH_START_CMD}
     volumes:
-      - /es/master1:/home/elasticsearch/data
-    logging:
-      driver: "json-file"
-      options:
-        max-size: "200k"
-        max-file: "10"
+      - ${MASTER1_DATA_PATH}:${ELASTICSEARCH_DATA_PATH}
   elasticsearch_master2:
     image: elasticsearch:latest
     ports:
-      - "9202:9202"
-      - "9302:9302"
+      - ${MASTER2_HTTP_PORT}:${MASTER2_HTTP_PORT}
+      - ${MASTER2_TRANSPORT_TCP_PORT}:${MASTER2_TRANSPORT_TCP_PORT}
     environment:
-      - CLUSTER_NAME=es-cluster
-      - NODE_NAME=node-master2
+      - CLUSTER_NAME=${CLUSTER_NAME}
+      - NODE_NAME=${MASTER2_NODE_NAME}
       - NODE_MASTER=true
       - NODE_DATA=false
-      - HTTP_PORT=9202
-      - TRANSPORT_TCP_PORT=9302
-      - DISCOVERY_PING_UNICAST_HOSTS=192.168.71.188:9301,192.168.71.188:9302
-      - DISCOVERY_MINIMUM_MASTER_NODES=2
-    command: /home/elasticsearch/elasticsearch-6.4.0/bin/elasticsearch
+      - HTTP_PORT=${MASTER2_HTTP_PORT}
+      - TRANSPORT_TCP_PORT=${MASTER2_TRANSPORT_TCP_PORT}
+      - DISCOVERY_PING_UNICAST_HOSTS=${DISCOVERY_PING_UNICAST_HOSTS}
+      - DISCOVERY_MINIMUM_MASTER_NODES=${DISCOVERY_MINIMUM_MASTER_NODES}
+    command: ${ELASTICSEARCH_START_CMD}
     volumes:
-      - /es/master2:/home/elasticsearch/data
-    logging:
-      driver: "json-file"
-      options:
-        max-size: "200k"
-        max-file: "10"
+      - ${MASTER2_DATA_PATH}:${ELASTICSEARCH_DATA_PATH}
   elasticsearch_data1:
     image: elasticsearch:latest
     ports:
-      - "9211:9211"
-      - "9311:9311"
+      - ${DATA1_HTTP_PORT}:${DATA1_HTTP_PORT}
+      - ${DATA1_TRANSPORT_TCP_PORT}:${DATA1_TRANSPORT_TCP_PORT}
     environment:
-      - CLUSTER_NAME=es-cluster
-      - NODE_NAME=node-data1
+      - CLUSTER_NAME=${CLUSTER_NAME}
+      - NODE_NAME=${DATA1_NODE_NAME}
       - NODE_MASTER=false
       - NODE_DATA=true
-      - HTTP_PORT=9211
-      - TRANSPORT_TCP_PORT=9311
-      - DISCOVERY_PING_UNICAST_HOSTS=192.168.71.188:9301,192.168.71.188:9302
-      - DISCOVERY_MINIMUM_MASTER_NODES=2
-    command: /home/elasticsearch/elasticsearch-6.4.0/bin/elasticsearch
+      - HTTP_PORT=${DATA1_HTTP_PORT}
+      - TRANSPORT_TCP_PORT=${DATA1_TRANSPORT_TCP_PORT}
+      - DISCOVERY_PING_UNICAST_HOSTS=${DISCOVERY_PING_UNICAST_HOSTS}
+      - DISCOVERY_MINIMUM_MASTER_NODES=${DISCOVERY_MINIMUM_MASTER_NODES}
+    command: ${ELASTICSEARCH_START_CMD}
     volumes:
-      - /es/data1:/home/elasticsearch/data
-    logging:
-      driver: "json-file"
-      options:
-        max-size: "200k"
-        max-file: "10"
+      - ${DATA1_DATA_PATH}:${ELASTICSEARCH_DATA_PATH}
     depends_on:
       - elasticsearch_master1
       - elasticsearch_master2
   elasticsearch_data2:
     image: elasticsearch:latest
     ports:
-      - "9212:9212"
-      - "9312:9312"
+      - ${DATA2_HTTP_PORT}:${DATA2_HTTP_PORT}
+      - ${DATA2_TRANSPORT_TCP_PORT}:${DATA2_TRANSPORT_TCP_PORT}
     environment:
-      - CLUSTER_NAME=es-cluster
-      - NODE_NAME=node-data2
+      - CLUSTER_NAME=${CLUSTER_NAME}
+      - NODE_NAME=${DATA2_NODE_NAME}
       - NODE_MASTER=false
       - NODE_DATA=true
-      - HTTP_PORT=9212
-      - TRANSPORT_TCP_PORT=9312
-      - DISCOVERY_PING_UNICAST_HOSTS=192.168.71.188:9301,192.168.71.188:9302
-      - DISCOVERY_MINIMUM_MASTER_NODES=2
-    command: /home/elasticsearch/elasticsearch-6.4.0/bin/elasticsearch
+      - HTTP_PORT=${DATA2_HTTP_PORT}
+      - TRANSPORT_TCP_PORT=${DATA2_TRANSPORT_TCP_PORT}
+      - DISCOVERY_PING_UNICAST_HOSTS=${DISCOVERY_PING_UNICAST_HOSTS}
+      - DISCOVERY_MINIMUM_MASTER_NODES=${DISCOVERY_MINIMUM_MASTER_NODES}
+    command: ${ELASTICSEARCH_START_CMD}
     volumes:
-      - /es/data2:/home/elasticsearch/data
-    logging:
-      driver: "json-file"
-      options:
-        max-size: "200k"
-        max-file: "10"
+      - ${DATA2_DATA_PATH}:${ELASTICSEARCH_DATA_PATH}
     depends_on:
       - elasticsearch_master1
       - elasticsearch_master2
   kibana:
     image: kibana:latest
     ports:
-      - "5601:5601"
+      - ${KIBANA_PORT}:${KIBANA_PORT}
     environment:
-      - ELASTICSEARCH_URL=http://192.168.71.188:9201
-    command: /home/kibana/kibana-6.4.1-linux-x86_64/bin/kibana
-    logging:
-      driver: "json-file"
-      options:
-        max-size: "200k"
-        max-file: "10"
+      - ELASTICSEARCH_URL=${ELASTICSEARCH_URL}
+    command: ${KIBANA_START_CMD}
     depends_on:
       - elasticsearch_master1
       - elasticsearch_master2
