@@ -70,15 +70,17 @@ services:
         max-file: "10"
     depends_on:
       - elasticsearch
- kibana:
-   image: kibana:latest
-   ports:
-     - "5601:5601"
-   command: /home/kibana/kibana-6.4.1-linux-x86_64/bin/kibana
-   logging:
-     driver: "json-file"
-     options:
-       max-size: "200k"
-       max-file: "10"
-   depends_on:
-     - elasticsearch
+  kibana:
+    image: kibana:latest
+    ports:
+      - "5601:5601"
+    environment:
+      - ELASTICSEARCH_URL=http://192.168.71.188:9200
+    command: /home/kibana/kibana-6.4.1-linux-x86_64/bin/kibana
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "200k"
+        max-file: "10"
+    depends_on:
+      - elasticsearch
