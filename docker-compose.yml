@@ -1,0 +1,45 @@
+#
+# 测试：docker-compose up
+#
+version: "3.2"
+services:
+  elasticsearch:
+    image: elasticsearch:latest
+    ports:
+      - "9200:9200"
+      - "9300:9300"
+    command: /home/elasticsearch/elasticsearch-6.4.0/bin/elasticsearch
+    volumes:
+      - /es/data_master:/home/elasticsearch/data
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "200k"
+        max-file: "10"
+  elasticsearch_slave_1:
+    image: elasticsearch_slave_1:latest
+    ports:
+      - "9201:9201"
+      - "9301:9301"
+    command: /home/elasticsearch/elasticsearch-6.4.0/bin/elasticsearch
+    volumes:
+      - /es/data_slave_1:/home/elasticsearch/data
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "200k"
+        max-file: "10"
+    depends_on:
+      - elasticsearch
+  kibana:
+    image: kibana:latest
+    ports:
+      - "5601:5601"
+    command: /home/kibana/kibana-6.4.1-linux-x86_64/bin/kibana
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "200k"
+        max-file: "10"
+    depends_on:
+      - elasticsearch
