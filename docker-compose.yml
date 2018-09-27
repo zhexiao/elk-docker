@@ -24,14 +24,14 @@ services:
       options:
         max-size: "200k"
         max-file: "10"
-  elasticsearch_slave1:
+  elasticsearch_data1:
     image: elasticsearch:latest
     ports:
       - "9201:9201"
       - "9301:9301"
     environment:
       - CLUSTER_NAME=es-cluster
-      - NODE_NAME=node-slave1
+      - NODE_NAME=node-data1
       - NODE_MASTER=false
       - NODE_DATA=true
       - HTTP_PORT=9201
@@ -39,7 +39,7 @@ services:
       - DISCOVERY_PING_UNICAST_HOSTS=192.168.71.188:9300
     command: /home/elasticsearch/elasticsearch-6.4.0/bin/elasticsearch
     volumes:
-      - /es/slave1:/home/elasticsearch/data
+      - /es/data1:/home/elasticsearch/data
     logging:
       driver: "json-file"
       options:
@@ -47,14 +47,14 @@ services:
         max-file: "10"
     depends_on:
       - elasticsearch
-  elasticsearch_slave2:
+  elasticsearch_data2:
     image: elasticsearch:latest
     ports:
       - "9202:9202"
       - "9302:9302"
     environment:
       - CLUSTER_NAME=es-cluster
-      - NODE_NAME=node-slave2
+      - NODE_NAME=node-data2
       - NODE_MASTER=false
       - NODE_DATA=true
       - HTTP_PORT=9202
@@ -62,7 +62,7 @@ services:
       - DISCOVERY_PING_UNICAST_HOSTS=192.168.71.188:9300
     command: /home/elasticsearch/elasticsearch-6.4.0/bin/elasticsearch
     volumes:
-      - /es/slave2:/home/elasticsearch/data
+      - /es/data2:/home/elasticsearch/data
     logging:
       driver: "json-file"
       options:
