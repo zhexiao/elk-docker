@@ -15,7 +15,7 @@ services:
       - NODE_DATA=false
       - HTTP_PORT=9200
       - TRANSPORT_TCP_PORT=9300
-      - DISCOVERY_PING_UNICAST_HOSTS=["192.168.33.33:9300"]
+      - DISCOVERY_PING_UNICAST_HOSTS=192.168.71.188:9300
     command: /home/elasticsearch/elasticsearch-6.4.0/bin/elasticsearch
     volumes:
       - /es/master:/home/elasticsearch/data
@@ -36,7 +36,7 @@ services:
       - NODE_DATA=true
       - HTTP_PORT=9201
       - TRANSPORT_TCP_PORT=9301
-      - DISCOVERY_PING_UNICAST_HOSTS=["192.168.33.33:9300"]
+      - DISCOVERY_PING_UNICAST_HOSTS=192.168.71.188:9300
     command: /home/elasticsearch/elasticsearch-6.4.0/bin/elasticsearch
     volumes:
       - /es/slave1:/home/elasticsearch/data
@@ -59,7 +59,7 @@ services:
       - NODE_DATA=true
       - HTTP_PORT=9202
       - TRANSPORT_TCP_PORT=9302
-      - DISCOVERY_PING_UNICAST_HOSTS=["192.168.33.33:9300"]
+      - DISCOVERY_PING_UNICAST_HOSTS=192.168.71.188:9300
     command: /home/elasticsearch/elasticsearch-6.4.0/bin/elasticsearch
     volumes:
       - /es/slave2:/home/elasticsearch/data
