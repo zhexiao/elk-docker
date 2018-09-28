@@ -3,6 +3,7 @@
 创建镜像前，需要先下载对应的tar.gz包放到common目录下面。
 - elasticsearch 6.4：https://artifacts.elastic.co/downloads/elasticsearch/elasticsearch-6.4.0.tar.gz
 - kibana 6.4.1：https://artifacts.elastic.co/downloads/kibana/kibana-6.4.1-linux-x86_64.tar.gz
+- logstash 6.4.1：https://artifacts.elastic.co/downloads/logstash/logstash-6.4.1.tar.gz
 
 **如果你下载的版本与上面的不一致，需要对应修改Dockerfile和.env文件。**
 
@@ -11,6 +12,7 @@
 ```
 $ docker build -t elasticsearch -f elasticsearch/Dockerfile .
 $ docker build -t kibana -f kibana/Dockerfile .
+$ docker build -t logstash -f logstash/Dockerfile .
 ```
 
 ## 3. 修改.env文件
