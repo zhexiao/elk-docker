@@ -1,5 +1,5 @@
 {
-  "template" : "test_index",
+  "template" : "test_index_*",
   "settings" : {
     "index.refresh_interval" : "5s"
   },

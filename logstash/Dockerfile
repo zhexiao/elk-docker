@@ -17,10 +17,8 @@ RUN groupadd -r logstash && useradd -r -l -d /home/logstash -g logstash -m logst
 # 环境
 WORKDIR /home/logstash
 ADD ./common/logstash-6.4.1.tar.gz .
-ADD ./logstash/test_log.conf /home/logstash/logstash-6.4.1/config/
-ADD ./logstash/test_index_template.json /home/logstash/logstash-6.4.1/config/
 RUN chown -R logstash:logstash logstash-6.4.1
 USER logstash
 RUN mkdir data
-RUN mkdir completed_log
+RUN mkdir config
 

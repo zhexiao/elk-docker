@@ -90,11 +90,11 @@ services:
   logstash:
     image: logstash:latest
     ports:
-      - 9600:9600
-    command: /home/logstash/logstash-6.4.1/bin/logstash -f /home/logstash/logstash-6.4.1/config/test_log.conf
+      - ${LOGSTASH_PORT}:${LOGSTASH_PORT}
+    command: ${LOGSTASH_START_CMD}
     volumes:
-      - /logstash/data:/home/logstash/data
-      - /logstash/completed_log:/home/logstash/completed_log
+      - ${LOGSTASH_DATA_PATH}:${LOGSTASH_CONTAINER_DATA_PATH}
+      - ${LOGSTASH_CONFIG_PATH}:${LOGSTASH_CONTAINER_CONFIG_PATH}
     depends_on:
       - elasticsearch_data1
       - elasticsearch_data2

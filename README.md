@@ -30,33 +30,17 @@ ELASTICSEARCH_START_CMD=/home/elasticsearch/elasticsearch-6.4.0/bin/elasticsearc
 因为在docker里面跑es，数据不能存在container里面，所以我们需要把host机器的路径映射到container里面。
 ```
 # 创建本地目录
-$ mkdir -p /es/master1
-$ mkdir -p /es/master2
-$ mkdir -p /es/data1
-$ mkdir -p /es/data2
-$ sudo chmod -R 777 /es
+$ sudo mkdir -p /opt/elk/
+$ cd /opt/elk
+$ sudo mkdir -p elasticsearch/master1 elasticsearch/master2 elasticsearch/data1 elasticsearch/data2
+$ sudo mkdir -p logstash/data logstash/config
+
+$ sudo chmod -R 777 /opt/elk
 ```
 
-elasticsearch.yml
-```
-path.data: /home/elasticsearch/data
-```
-
-.env
-```
-MASTER1_DATA_PATH=/es/master1
-MASTER2_DATA_PATH=/es/master2
-DATA1_DATA_PATH=/es/data1
-DATA2_DATA_PATH=/es/data2
-```
-
-docker-compose.yml
-```
-...
-volumes:
-  - ${MASTER1_DATA_PATH}:${ELASTICSEARCH_DATA_PATH}
-...
-```
+### logstash配置
+1. 需要导入的数据放在文件夹logstash/data下面
+2. 把logstash目录下面的json和conf配置文件放在logstash/config下面
 
 ## 5. 启动
 ```
