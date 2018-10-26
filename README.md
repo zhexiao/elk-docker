@@ -20,10 +20,7 @@ $ docker build -t logstash -f logstash/Dockerfile .
 # 根据自身需求修改配置文件，比如IP地址，启动路径等
 CLUSTER_NAME=es-cluster
 ELASTICSEARCH_URL=http://192.168.71.188:9201
-DISCOVERY_MINIMUM_MASTER_NODES=2
 DISCOVERY_PING_UNICAST_HOSTS=192.168.71.188:9301,192.168.71.188:9302
-ELASTICSEARCH_DATA_PATH=/home/elasticsearch/data
-ELASTICSEARCH_START_CMD=/home/elasticsearch/elasticsearch-6.4.0/bin/elasticsearch
 ```
 
 ## 4. 创建数据保存目录
