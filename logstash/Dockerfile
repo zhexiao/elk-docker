@@ -6,7 +6,7 @@
 FROM ubuntu:xenial
 
 ADD ./common/sources.list /etc/apt/sources.list
-RUN apt-get update && apt-get upgrade
+RUN apt-get update -y && apt-get upgrade -y
 
 # JAVA环境
 RUN apt-get install -y openjdk-8-jdk apt-transport-https
