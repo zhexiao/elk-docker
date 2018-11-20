@@ -14,15 +14,15 @@
 #
 # Use a descriptive name for your cluster:
 #
-cluster.name: ${CLUSTER_NAME}
+cluster.name: ccnu-elasticsearch-cluster
 #
 # ------------------------------------ Node ------------------------------------
 #
 # Use a descriptive name for the node:
 #
-node.name: ${NODE_NAME}
-node.master: ${NODE_MASTER}
-node.data: ${NODE_DATA}
+node.name: node-data2
+node.master: false
+node.data: true
 #
 # Add custom attributes to the node:
 #
@@ -59,8 +59,8 @@ network.host: 0.0.0.0
 #
 # Set a custom port for HTTP:
 #
-http.port: ${HTTP_PORT}
-transport.tcp.port: ${TRANSPORT_TCP_PORT}
+http.port: 9201
+transport.tcp.port: 9301
 # For more information, consult the network module documentation.
 #
 # --------------------------------- Discovery ----------------------------------
@@ -68,11 +68,11 @@ transport.tcp.port: ${TRANSPORT_TCP_PORT}
 # Pass an initial list of hosts to perform discovery when new node is started:
 # The default list of hosts is ["127.0.0.1", "[::1]"]
 #
-discovery.zen.ping.unicast.hosts: ${DISCOVERY_PING_UNICAST_HOSTS}
+discovery.zen.ping.unicast.hosts: ["192.168.33.33:9310","192.168.33.33:9311"]
 #
 # Prevent the "split brain" by configuring the majority of nodes (total number of master-eligible nodes / 2 + 1):
 #
-discovery.zen.minimum_master_nodes: ${DISCOVERY_MINIMUM_MASTER_NODES}
+discovery.zen.minimum_master_nodes: 2
 #
 # For more information, consult the zen discovery module documentation.
 #

@@ -1,48 +1,33 @@
 # elk-docker
-## 1. 下载包
-创建镜像前，需要先下载对应的tar.gz包放到common目录下面。
+# 下载包
+创建镜像前，需要先下载对应的tar.gz包。
 - elasticsearch 6.4：https://artifacts.elastic.co/downloads/elasticsearch/elasticsearch-6.4.0.tar.gz
 - kibana 6.4.1：https://artifacts.elastic.co/downloads/kibana/kibana-6.4.1-linux-x86_64.tar.gz
 - logstash 6.4.1：https://artifacts.elastic.co/downloads/logstash/logstash-6.4.1.tar.gz
 
-**如果你下载的版本与上面的不一致，需要对应修改Dockerfile和.env文件。**
-
-
-## 2. 创建Elasticsearch和Kibana镜像
+# elasticsearch
+## 创建目录
 ```
+$ sudo mkdir -p /opt/elasticsearch/data
+$ cd /opt/elasticsearch/data
+$ sudo mkdir -p master1 master2 data1 data2
+
+# 这里如果不改777，则挂载到container里面就会缺少访问权限
+$ sudo chmod -R 777 /opt/elasticsearch
+$ tar -zxvf elasticsearch-6.4.0.tar.gz -C /opt/elasticsearch/
+```
+
+## 创建image
+```
+$ cd elk-docker
 $ docker build -t elasticsearch -f elasticsearch/Dockerfile .
-$ docker build -t kibana -f kibana/Dockerfile .
-$ docker build -t logstash -f logstash/Dockerfile .
 ```
 
-## 3. 修改.env文件
-```
-# 根据自身需求修改配置文件，比如IP地址，启动路径等
-CLUSTER_NAME=es-cluster
-ELASTICSEARCH_URL=http://192.168.71.188:9201
-DISCOVERY_PING_UNICAST_HOSTS=192.168.71.188:9301,192.168.71.188:9302
-```
+## 配置文件
+按需修改elasticsearch/conf里面的配置，需要注意的有：
+1. discovery.zen.ping.unicast.hosts
 
-## 4. 创建数据保存目录
-因为在docker里面跑es，数据不能存在container里面，所以我们需要把host机器的路径映射到container里面。
-```
-# 创建本地目录
-$ sudo mkdir -p /opt/elk/
-$ cd /opt/elk
-$ sudo mkdir -p elasticsearch/master1 elasticsearch/master2 elasticsearch/data1 elasticsearch/data2
-$ sudo mkdir -p logstash/data logstash/config
-
-$ sudo chmod -R 777 /opt/elk
-```
-
-### logstash配置
-1. 需要导入的数据放在文件夹logstash/data下面
-2. 把logstash目录下面的json和conf配置文件放在logstash/config下面
-
-## 5. 启动
-```
-$ docker-compose up
-```
+## QA
 如果启动出现错误：
 max virtual memory areas vm.max_map_count [65530] is too low, increase to at least [262144]
 
@@ -54,4 +39,32 @@ vm.max_map_count=524288
 """
 
 $ sudo sysctl -p
+```
+
+# kibana
+## 创建目录
+```
+$ sudo mkdir -p /opt/kibana
+
+# 这里如果不改777，则挂载到container里面就会缺少访问权限
+$ sudo chmod -R 777 /opt/kibana
+$ tar -zxvf kibana-6.4.1-linux-x86_64.tar.gz -C /opt/kibana/
+```
+
+## 创建image
+```
+$ cd elk-docker
+$ docker build -t kibana -f kibana/Dockerfile .
+```
+
+## 配置文件
+按需修改kibana/conf里面的配置，需要注意的有：
+1. elasticsearch.url
+
+# 部署
+```
+$ docker stack deploy -c docker-compose.yml elk_v1
+
+# 移除部署
+$ docker stack rm elk_v1
 ```

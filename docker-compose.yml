@@ -6,95 +6,53 @@ services:
   elasticsearch_master1:
     image: elasticsearch:latest
     ports:
-      - ${MASTER1_HTTP_PORT}:${MASTER1_HTTP_PORT}
-      - ${MASTER1_TRANSPORT_TCP_PORT}:${MASTER1_TRANSPORT_TCP_PORT}
-    environment:
-      - CLUSTER_NAME=${CLUSTER_NAME}
-      - NODE_NAME=${MASTER1_NODE_NAME}
-      - NODE_MASTER=true
-      - NODE_DATA=false
-      - HTTP_PORT=${MASTER1_HTTP_PORT}
-      - TRANSPORT_TCP_PORT=${MASTER1_TRANSPORT_TCP_PORT}
-      - DISCOVERY_PING_UNICAST_HOSTS=${DISCOVERY_PING_UNICAST_HOSTS}
-      - DISCOVERY_MINIMUM_MASTER_NODES=${DISCOVERY_MINIMUM_MASTER_NODES}
-    command: ${ELASTICSEARCH_START_CMD}
+      - 9210:9210
+      - 9310:9310
+    command: /home/elasticsearch/bin/elasticsearch
     volumes:
-      - ${MASTER1_DATA_PATH}:${ELASTICSEARCH_DATA_PATH}
+      - /opt/elasticsearch/elasticsearch-6.4.0:/home/elasticsearch
+      - ./elasticsearch/conf/elasticsearch_master1.yml:/home/elasticsearch/config/elasticsearch.yml
+      - /opt/elasticsearch/data/master1:/home/elasticsearch/data
   elasticsearch_master2:
     image: elasticsearch:latest
     ports:
-      - ${MASTER2_HTTP_PORT}:${MASTER2_HTTP_PORT}
-      - ${MASTER2_TRANSPORT_TCP_PORT}:${MASTER2_TRANSPORT_TCP_PORT}
-    environment:
-      - CLUSTER_NAME=${CLUSTER_NAME}
-      - NODE_NAME=${MASTER2_NODE_NAME}
-      - NODE_MASTER=true
-      - NODE_DATA=false
-      - HTTP_PORT=${MASTER2_HTTP_PORT}
-      - TRANSPORT_TCP_PORT=${MASTER2_TRANSPORT_TCP_PORT}
-      - DISCOVERY_PING_UNICAST_HOSTS=${DISCOVERY_PING_UNICAST_HOSTS}
-      - DISCOVERY_MINIMUM_MASTER_NODES=${DISCOVERY_MINIMUM_MASTER_NODES}
-    command: ${ELASTICSEARCH_START_CMD}
+      - 9211:9211
+      - 9311:9311
+    command: /home/elasticsearch/bin/elasticsearch
     volumes:
-      - ${MASTER2_DATA_PATH}:${ELASTICSEARCH_DATA_PATH}
+      - /opt/elasticsearch/elasticsearch-6.4.0:/home/elasticsearch
+      - ./elasticsearch/conf/elasticsearch_master2.yml:/home/elasticsearch/config/elasticsearch.yml
+      - /opt/elasticsearch/data/master2:/home/elasticsearch/data
   elasticsearch_data1:
     image: elasticsearch:latest
     ports:
-      - ${DATA1_HTTP_PORT}:${DATA1_HTTP_PORT}
-      - ${DATA1_TRANSPORT_TCP_PORT}:${DATA1_TRANSPORT_TCP_PORT}
-    environment:
-      - CLUSTER_NAME=${CLUSTER_NAME}
-      - NODE_NAME=${DATA1_NODE_NAME}
-      - NODE_MASTER=false
-      - NODE_DATA=true
-      - HTTP_PORT=${DATA1_HTTP_PORT}
-      - TRANSPORT_TCP_PORT=${DATA1_TRANSPORT_TCP_PORT}
-      - DISCOVERY_PING_UNICAST_HOSTS=${DISCOVERY_PING_UNICAST_HOSTS}
-      - DISCOVERY_MINIMUM_MASTER_NODES=${DISCOVERY_MINIMUM_MASTER_NODES}
-    command: ${ELASTICSEARCH_START_CMD}
+      - 9200:9200
+      - 9300:9300
+    command: /home/elasticsearch/bin/elasticsearch
     volumes:
-      - ${DATA1_DATA_PATH}:${ELASTICSEARCH_DATA_PATH}
-    depends_on:
-      - elasticsearch_master1
-      - elasticsearch_master2
+      - /opt/elasticsearch/elasticsearch-6.4.0:/home/elasticsearch
+      - ./elasticsearch/conf/elasticsearch_data1.yml:/home/elasticsearch/config/elasticsearch.yml
+      - /opt/elasticsearch/data/data1:/home/elasticsearch/data
   elasticsearch_data2:
     image: elasticsearch:latest
     ports:
-      - ${DATA2_HTTP_PORT}:${DATA2_HTTP_PORT}
-      - ${DATA2_TRANSPORT_TCP_PORT}:${DATA2_TRANSPORT_TCP_PORT}
-    environment:
-      - CLUSTER_NAME=${CLUSTER_NAME}
-      - NODE_NAME=${DATA2_NODE_NAME}
-      - NODE_MASTER=false
-      - NODE_DATA=true
-      - HTTP_PORT=${DATA2_HTTP_PORT}
-      - TRANSPORT_TCP_PORT=${DATA2_TRANSPORT_TCP_PORT}
-      - DISCOVERY_PING_UNICAST_HOSTS=${DISCOVERY_PING_UNICAST_HOSTS}
-      - DISCOVERY_MINIMUM_MASTER_NODES=${DISCOVERY_MINIMUM_MASTER_NODES}
-    command: ${ELASTICSEARCH_START_CMD}
+      - 9201:9201
+      - 9301:9301
+    command: /home/elasticsearch/bin/elasticsearch
     volumes:
-      - ${DATA2_DATA_PATH}:${ELASTICSEARCH_DATA_PATH}
-    depends_on:
-      - elasticsearch_master1
-      - elasticsearch_master2
+      - /opt/elasticsearch/elasticsearch-6.4.0:/home/elasticsearch
+      - ./elasticsearch/conf/elasticsearch_data2.yml:/home/elasticsearch/config/elasticsearch.yml
+      - /opt/elasticsearch/data/data2:/home/elasticsearch/data
   kibana:
     image: kibana:latest
     ports:
-      - ${KIBANA_PORT}:${KIBANA_PORT}
-    environment:
-      - ELASTICSEARCH_URL=${ELASTICSEARCH_URL}
-    command: ${KIBANA_START_CMD}
+      - 5601:5601
+    command: /home/kibana/bin/kibana
+    volumes:
+      - /opt/kibana/kibana-6.4.1-linux-x86_64:/home/kibana
+      - ./kibana/conf/kibana.yml:/home/kibana/config/kibana.yml
     depends_on:
       - elasticsearch_master1
       - elasticsearch_master2
-  logstash:
-    image: logstash:latest
-    ports:
-      - ${LOGSTASH_PORT}:${LOGSTASH_PORT}
-    command: ${LOGSTASH_START_CMD}
-    volumes:
-      - ${LOGSTASH_DATA_PATH}:${LOGSTASH_CONTAINER_DATA_PATH}
-      - ${LOGSTASH_CONFIG_PATH}:${LOGSTASH_CONTAINER_CONFIG_PATH}
-    depends_on:
       - elasticsearch_data1
       - elasticsearch_data2
