@@ -13,6 +13,10 @@ services:
       - /opt/elasticsearch/elasticsearch-6.4.0:/home/elasticsearch
       - ./elasticsearch/conf/elasticsearch_master1.yml:/home/elasticsearch/config/elasticsearch.yml
       - /opt/elasticsearch/data/master1:/home/elasticsearch/data
+    deploy:
+      restart_policy:
+        condition: any
+        delay: 5s
   elasticsearch_master2:
     image: elasticsearch:latest
     ports:
@@ -23,6 +27,10 @@ services:
       - /opt/elasticsearch/elasticsearch-6.4.0:/home/elasticsearch
       - ./elasticsearch/conf/elasticsearch_master2.yml:/home/elasticsearch/config/elasticsearch.yml
       - /opt/elasticsearch/data/master2:/home/elasticsearch/data
+    deploy:
+      restart_policy:
+        condition: any
+        delay: 5s
   elasticsearch_data1:
     image: elasticsearch:latest
     ports:
@@ -33,6 +41,10 @@ services:
       - /opt/elasticsearch/elasticsearch-6.4.0:/home/elasticsearch
       - ./elasticsearch/conf/elasticsearch_data1.yml:/home/elasticsearch/config/elasticsearch.yml
       - /opt/elasticsearch/data/data1:/home/elasticsearch/data
+    deploy:
+      restart_policy:
+        condition: any
+        delay: 5s
   elasticsearch_data2:
     image: elasticsearch:latest
     ports:
@@ -43,6 +55,10 @@ services:
       - /opt/elasticsearch/elasticsearch-6.4.0:/home/elasticsearch
       - ./elasticsearch/conf/elasticsearch_data2.yml:/home/elasticsearch/config/elasticsearch.yml
       - /opt/elasticsearch/data/data2:/home/elasticsearch/data
+    deploy:
+      restart_policy:
+        condition: any
+        delay: 5s
   kibana:
     image: kibana:latest
     ports:
@@ -51,6 +67,10 @@ services:
     volumes:
       - /opt/kibana/kibana-6.4.1-linux-x86_64:/home/kibana
       - ./kibana/conf/kibana.yml:/home/kibana/config/kibana.yml
+    deploy:
+      restart_policy:
+        condition: any
+        delay: 5s
     depends_on:
       - elasticsearch_master1
       - elasticsearch_master2
