@@ -25,7 +25,16 @@ $ docker build -t elasticsearch -f elasticsearch/Dockerfile .
 
 ## 配置文件
 按需修改elasticsearch/conf里面的配置，需要注意的有：
-1. discovery.zen.ping.unicast.hosts
+1. network.host
+2. discovery.zen.ping.unicast.hosts
+3. http.port
+4. transport.tcp.port
+5. discovery.zen.minimum_master_nodes
+6. path.data
+7. cluster.name
+8. node.name
+9. node.master
+10. node.data
 
 ## QA
 如果启动出现错误：
@@ -59,7 +68,31 @@ $ docker build -t kibana -f kibana/Dockerfile .
 
 ## 配置文件
 按需修改kibana/conf里面的配置，需要注意的有：
-1. elasticsearch.url
+1. server.host
+2. elasticsearch.url
+
+
+# logstash
+## 创建目录
+```
+$ sudo mkdir -p /opt/logstash
+
+# 这里如果不改777，则挂载到container里面就会缺少访问权限
+$ sudo chmod -R 777 /opt/logstash
+$ tar -zxvf logstash-6.4.1.tar.gz -C /opt/logstash/
+```
+
+## 创建image
+```
+$ cd elk-docker
+$ docker build -t logstash -f logstash/Dockerfile .
+```
+
+## 配置文件
+1. 按需选择conf里面的配置文件
+2. 修改 docker-compose.yml里面的参数 &logstash-volumes 和  &logstash-run
+3. 按需更新参数里面的配置文件路径
+
 
 # 部署
 ```
