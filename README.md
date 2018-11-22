@@ -12,9 +12,10 @@ $ sudo mkdir -p /opt/elasticsearch/data
 $ cd /opt/elasticsearch/data
 $ sudo mkdir -p master1 master2 data1 data2
 
+$ sudo tar -zxvf elasticsearch-6.4.0.tar.gz -C /opt/elasticsearch/
+
 # 这里如果不改777，则挂载到container里面就会缺少访问权限
 $ sudo chmod -R 777 /opt/elasticsearch
-$ tar -zxvf elasticsearch-6.4.0.tar.gz -C /opt/elasticsearch/
 ```
 
 ## 创建image
