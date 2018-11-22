@@ -68,7 +68,7 @@ transport.tcp.port: 9301
 # Pass an initial list of hosts to perform discovery when new node is started:
 # The default list of hosts is ["127.0.0.1", "[::1]"]
 #
-discovery.zen.ping.unicast.hosts: ["192.168.33.33:9310","192.168.33.33:9311"]
+discovery.zen.ping.unicast.hosts: ["192.168.71.139:9310","192.168.71.139:9311"]
 #
 # Prevent the "split brain" by configuring the majority of nodes (total number of master-eligible nodes / 2 + 1):
 #
