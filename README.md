@@ -80,6 +80,10 @@ $ sudo mkdir -p /opt/logstash
 # 这里如果不改777，则挂载到container里面就会缺少访问权限
 $ sudo chmod -R 777 /opt/logstash
 $ tar -zxvf logstash-6.4.1.tar.gz -C /opt/logstash/
+
+# 存放一些例如es的模板
+$ cd logstash-6.4.1
+$ mkdir tpl
 ```
 
 ## 创建image
@@ -93,6 +97,14 @@ $ docker build -t logstash -f logstash/Dockerfile .
 2. 修改 docker-compose.yml里面的参数 &logstash-volumes 和  &logstash-run
 3. 按需更新参数里面的配置文件路径
 
+## 插件安装
+```
+# 安装kafka input插件
+$ ./bin/logstash-plugin install logstash-input-kafka
+
+# 安装es output插件
+$ ./bin/logstash-plugin install logstash-output-elasticsearch
+```
 
 # 部署
 ```

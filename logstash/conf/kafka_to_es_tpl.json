@@ -1,0 +1,15 @@
+{
+  "template": "question_view_count",
+  "settings": {
+    "index.refresh_interval": "5s"
+  },
+  "mappings": {
+    "doc": {
+      "properties": {
+        "qid": {
+          "type": "keyword"
+        }
+      }
+    }
+  }
+}
