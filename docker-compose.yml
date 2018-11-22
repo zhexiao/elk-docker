@@ -38,7 +38,6 @@ x-volumes:
   &logstash-volumes
   - /opt/logstash/logstash-6.4.1:/home/logstash
   - ./logstash/conf/kafka_to_es.conf:/home/logstash/config/kafka_to_es.conf
-  - ./logstash/conf/kafka_to_es_tpl.json:/home/logstash/tpl/kafka_to_es_tpl.json
 
 x-command:
   &logstash-run

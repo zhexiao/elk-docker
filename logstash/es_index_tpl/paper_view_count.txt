@@ -1,0 +1,35 @@
+curl -XPUT 'localhost:9200/paper_view_count' -u elastic -H 'Content-Type: application/json' -d '
+{
+  "mappings": {
+    "doc": {
+      "dynamic": false,
+      "properties": {
+        "paper_id": {
+          "type": "keyword"
+        },
+        "view_count": {
+          "type": "integer"
+        },
+        "create_time": {
+          "type": "date",
+          "format": "yyyy-MM-dd HH:mm:ss||yyyy-MM-dd||epoch_millis"
+        },
+        "update_time": {
+          "type": "date",
+          "format": "yyyy-MM-dd HH:mm:ss||yyyy-MM-dd||epoch_millis"
+        }
+      }
+    }
+  }
+}'
+
+# 删除索引
+curl -XDELETE 'localhost:9200/paper_view_count'
+
+# 删除所有数据
+curl -XPOST 'localhost:9200/paper_view_count/_delete_by_query?pretty' -u elastic -H 'Content-Type: application/json' -d '
+{
+  "query": {
+    "match_all": {}
+  }
+}'
