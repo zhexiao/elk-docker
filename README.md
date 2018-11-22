@@ -95,7 +95,6 @@ $ docker build -t logstash -f logstash/Dockerfile .
 ## 配置文件
 1. 按需选择conf里面的配置文件
 2. 修改 docker-compose.yml里面的参数 &logstash-volumes 和  &logstash-run
-3. 按需更新参数里面的配置文件路径
 
 ## 插件安装
 ```
