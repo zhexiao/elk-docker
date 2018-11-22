@@ -44,71 +44,71 @@ x-command:
   /home/logstash/bin/logstash -f /home/logstash/config/kafka_to_es.conf
 
 services:
-#  elasticsearch_master1:
-#    image: elasticsearch:latest
-#    ports:
-#      - 9210:9210
-#      - 9310:9310
-#    command: *es-run
-#    volumes:
-#      - *es-home-dir
-#      - ./elasticsearch/conf/elasticsearch_master1.yml:/home/elasticsearch/config/elasticsearch.yml
-#      - /opt/elasticsearch/data/master1:/home/elasticsearch/data
-#    deploy: *default-deploy
-#    logging: *default-logging
-#
-#  elasticsearch_master2:
-#    image: elasticsearch:latest
-#    ports:
-#      - 9211:9211
-#      - 9311:9311
-#    command: *es-run
-#    volumes:
-#      - *es-home-dir
-#      - ./elasticsearch/conf/elasticsearch_master2.yml:/home/elasticsearch/config/elasticsearch.yml
-#      - /opt/elasticsearch/data/master2:/home/elasticsearch/data
-#    deploy: *default-deploy
-#    logging: *default-logging
-#
-#  elasticsearch_data1:
-#    image: elasticsearch:latest
-#    ports:
-#      - 9200:9200
-#      - 9300:9300
-#    command: *es-run
-#    volumes:
-#      - *es-home-dir
-#      - ./elasticsearch/conf/elasticsearch_data1.yml:/home/elasticsearch/config/elasticsearch.yml
-#      - /opt/elasticsearch/data/data1:/home/elasticsearch/data
-#    deploy: *default-deploy
-#    logging: *default-logging
-#
-#  elasticsearch_data2:
-#    image: elasticsearch:latest
-#    ports:
-#      - 9201:9201
-#      - 9301:9301
-#    command: *es-run
-#    volumes:
-#      - *es-home-dir
-#      - ./elasticsearch/conf/elasticsearch_data2.yml:/home/elasticsearch/config/elasticsearch.yml
-#      - /opt/elasticsearch/data/data2:/home/elasticsearch/data
-#    deploy: *default-deploy
-#    logging: *default-logging
-#
-#  kibana:
-#    image: kibana:latest
-#    ports:
-#      - 5601:5601
-#    command: *kibana-run
-#    volumes: *kibana-volumes
-#    deploy: *default-deploy
-#    logging: *default-logging
-#    depends_on:
-#      - elasticsearch_master1
-#      - elasticsearch_master2
-#      - elasticsearch_data1
-#      - elasticsearch_data2
+  elasticsearch_master1:
+    image: elasticsearch:latest
+    ports:
+      - 9210:9210
+      - 9310:9310
+    command: *es-run
+    volumes:
+      - *es-home-dir
+      - ./elasticsearch/conf/elasticsearch_master1.yml:/home/elasticsearch/config/elasticsearch.yml
+      - /opt/elasticsearch/data/master1:/home/elasticsearch/data
+    deploy: *default-deploy
+    logging: *default-logging
+
+  elasticsearch_master2:
+    image: elasticsearch:latest
+    ports:
+      - 9211:9211
+      - 9311:9311
+    command: *es-run
+    volumes:
+      - *es-home-dir
+      - ./elasticsearch/conf/elasticsearch_master2.yml:/home/elasticsearch/config/elasticsearch.yml
+      - /opt/elasticsearch/data/master2:/home/elasticsearch/data
+    deploy: *default-deploy
+    logging: *default-logging
+
+  elasticsearch_data1:
+    image: elasticsearch:latest
+    ports:
+      - 9200:9200
+      - 9300:9300
+    command: *es-run
+    volumes:
+      - *es-home-dir
+      - ./elasticsearch/conf/elasticsearch_data1.yml:/home/elasticsearch/config/elasticsearch.yml
+      - /opt/elasticsearch/data/data1:/home/elasticsearch/data
+    deploy: *default-deploy
+    logging: *default-logging
+
+  elasticsearch_data2:
+    image: elasticsearch:latest
+    ports:
+      - 9201:9201
+      - 9301:9301
+    command: *es-run
+    volumes:
+      - *es-home-dir
+      - ./elasticsearch/conf/elasticsearch_data2.yml:/home/elasticsearch/config/elasticsearch.yml
+      - /opt/elasticsearch/data/data2:/home/elasticsearch/data
+    deploy: *default-deploy
+    logging: *default-logging
+
+  kibana:
+    image: kibana:latest
+    ports:
+      - 5601:5601
+    command: *kibana-run
+    volumes: *kibana-volumes
+    deploy: *default-deploy
+    logging: *default-logging
+    depends_on:
+      - elasticsearch_master1
+      - elasticsearch_master2
+      - elasticsearch_data1
+      - elasticsearch_data2
 
   logstash:
     image: logstash:latest
@@ -118,8 +118,8 @@ services:
     volumes: *logstash-volumes
     deploy: *default-deploy
     logging: *default-logging
-#    depends_on:
-#      - elasticsearch_master1
-#      - elasticsearch_master2
-#      - elasticsearch_data1
-#      - elasticsearch_data2
+    depends_on:
+      - elasticsearch_master1
+      - elasticsearch_master2
+      - elasticsearch_data1
+      - elasticsearch_data2

@@ -95,9 +95,13 @@ $ docker build -t logstash -f logstash/Dockerfile .
 ## 配置文件
 1. 按需选择conf里面的配置文件
 2. 修改 docker-compose.yml里面的参数 &logstash-volumes 和  &logstash-run
+3. 按需修改kafka_to_es.conf配置
 
 ## 插件安装
 ```
+$ sudo apt-get install -y openjdk-8-jdk apt-transport-https
+$ cd /opt/logstash/logstash-6.4.1
+
 # 安装kafka input插件
 $ ./bin/logstash-plugin install logstash-input-kafka
 
