@@ -25,17 +25,20 @@ $ docker build -t elasticsearch -f elasticsearch/Dockerfile .
 ```
 
 ## 配置文件
+```
+$ cp elasticsearch_data.yml.example elasticsearch_data1.yml
+$ cp elasticsearch_data.yml.example elasticsearch_data2.yml
+
+$ cp elasticsearch_master.yml.example elasticsearch_master1.yml
+$ cp elasticsearch_master.yml.example elasticsearch_master2.yml
+```
 按需修改elasticsearch/conf里面的配置，需要注意的有：
-1. network.host
-2. discovery.zen.ping.unicast.hosts
+1. cluster.name
+2. node.name
 3. http.port
 4. transport.tcp.port
-5. discovery.zen.minimum_master_nodes
-6. path.data
-7. cluster.name
-8. node.name
-9. node.master
-10. node.data
+5. discovery.zen.ping.unicast.hosts
+6. discovery.zen.minimum_master_nodes
 
 ## QA
 如果启动出现错误：
