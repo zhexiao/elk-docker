@@ -68,6 +68,9 @@ $ docker build -t kibana -f kibana/Dockerfile .
 ```
 
 ## 配置文件
+```
+$ cp kibana.yml.example kibana.yml
+```
 按需修改kibana/conf里面的配置，需要注意的有：
 1. server.host
 2. elasticsearch.url
@@ -94,9 +97,13 @@ $ docker build -t logstash -f logstash/Dockerfile .
 ```
 
 ## 配置文件
-1. 按需选择conf里面的配置文件
-2. 修改 docker-compose.yml里面的参数 &logstash-volumes 和  &logstash-run
-3. 按需修改kafka_to_es.conf配置
+假设我们选择的配置文件是kafka_to_es
+```
+$ cp kafka_to_es.conf.example kafka_to_es.conf
+```
+1. 修改kakfa服务bootstrap_servers等配置
+2. 修改Elasticsearch服务hosts等配置
+3. 修改 docker-compose.yml里面的参数 &logstash-volumes 和  &logstash-run，确认配置文件名
 
 ## 插件安装
 ```
