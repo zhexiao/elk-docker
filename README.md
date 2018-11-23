@@ -40,6 +40,8 @@ $ cp elasticsearch_master.yml.example elasticsearch_master2.yml
 5. discovery.zen.ping.unicast.hosts
 6. discovery.zen.minimum_master_nodes
 
+注：保证配置里面的端口号与docker-compose.yml里面的port对应上。
+
 ## QA
 如果启动出现错误：
 max virtual memory areas vm.max_map_count [65530] is too low, increase to at least [262144]
