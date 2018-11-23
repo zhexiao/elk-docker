@@ -80,6 +80,7 @@ $ cp kibana.yml.example kibana.yml
 1. server.host
 2. elasticsearch.url
 
+注：保证配置里面的端口号与docker-compose.yml里面的port对应上。
 
 # logstash
 ## 创建目录
