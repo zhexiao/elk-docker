@@ -1,0 +1,15 @@
+{
+  "template" : "test_index_*",
+  "settings" : {
+    "index.refresh_interval" : "5s"
+  },
+  "mappings" : {
+    "test_doc":{
+      "properties":{
+        "name":{
+          "type": "keyword"
+        }
+      }
+    }
+  }
+}
