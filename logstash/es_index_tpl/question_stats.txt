@@ -1,0 +1,8 @@
+"""
+试题的使用次数和浏览次数操作集
+"""
+1. 查看cmd：
+bin/kafka-topics.sh --describe --zookeeper localhost:2181 --topic question_stats
+
+2. 创建cmd：
+bin/kafka-topics.sh --create --zookeeper localhost:2181 --replication-factor 3 --partitions 1 --topic question_stats

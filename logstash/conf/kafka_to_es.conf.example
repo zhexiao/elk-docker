@@ -1,18 +1,18 @@
 input{
     kafka{
-        topics => ["question_view_count"]
+        topics => ["question_stats"]
         bootstrap_servers  => "192.168.71.163:9091,192.168.71.163:9092,192.168.71.163:9093"
         codec => "json"
-        id => "question_view_count"
-        tags => ["question_view_count"]
+        id => "question_stats"
+        tags => ["question_stats"]
     }
 
     kafka{
-        topics => ["paper_view_count"]
+        topics => ["paper_stats"]
         bootstrap_servers  => "192.168.71.163:9091,192.168.71.163:9092,192.168.71.163:9093"
         codec => "json"
-        id => "paper_view_count"
-        tags => ["paper_view_count"]
+        id => "paper_stats"
+        tags => ["paper_stats"]
     }
 }
 
@@ -20,11 +20,11 @@ filter{
 }
 
 output{
-    if "question_view_count" in [tags] {
+    if "question_stats" in [tags] {
         elasticsearch {
             hosts => ["192.168.71.139:9200","192.168.71.139:9201"]
             codec => "json"
-            index => "question_view_count"
+            index => "question_stats"
             document_type => "doc"
         }
 
@@ -33,11 +33,11 @@ output{
         }
     }
 
-    if "paper_view_count" in [tags] {
+    if "paper_stats" in [tags] {
         elasticsearch {
             hosts => ["192.168.71.139:9200","192.168.71.139:9201"]
             codec => "json"
-            index => "paper_view_count"
+            index => "paper_stats"
             document_type => "doc"
         }
 
