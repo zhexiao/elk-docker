@@ -147,6 +147,7 @@ $ ./bin/logstash-plugin install logstash-output-elasticsearch
 
 # 部署
 ```
+$ docker swarm init
 $ docker stack deploy -c docker-compose.yml elk_v1
 
 # 移除部署
