@@ -6,7 +6,7 @@
 - logstash 6.4.1：https://artifacts.elastic.co/downloads/logstash/logstash-6.4.1.tar.gz
 
 # elasticsearch
-## 创建目录
+## 创建目录（默认创建2主节点2数据节点）
 ```
 $ sudo mkdir -p /opt/elasticsearch/data
 $ cd /opt/elasticsearch/data
