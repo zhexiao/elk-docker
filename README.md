@@ -42,6 +42,26 @@ $ cp elasticsearch_master.yml.example elasticsearch_master2.yml
 
 注：保证配置里面的端口号与docker-compose.yml里面的port对应上。
 
+#### 一般建议：
+data_1：
+http.port: 9200
+transport.tcp.port: 9300
+
+data_2:
+http.port: 9201
+transport.tcp.port: 9301
+
+master_1:
+http.port: 9210
+transport.tcp.port: 9310
+
+master_2:
+http.port: 9211
+transport.tcp.port: 9311
+
+同时还需要修改discovery.zen.ping.unicast.hosts为master的 IP地址 + tcp.port
+
+
 ## QA
 如果启动出现错误：
 max virtual memory areas vm.max_map_count [65530] is too low, increase to at least [262144]
