@@ -40,6 +40,8 @@ $ cp elasticsearch_master.yml.example elasticsearch_master2.yml
 5. discovery.zen.ping.unicast.hosts
 6. discovery.zen.minimum_master_nodes
 
+如果按默认配置走，则只需要修改discovery.zen.ping.unicast.hosts的IP地址。
+
 注：保证配置里面的端口号与docker-compose.yml里面的port对应上。
 
 ## QA
