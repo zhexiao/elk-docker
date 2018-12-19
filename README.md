@@ -43,6 +43,7 @@ $ cp elasticsearch_master.yml.example elasticsearch_master2.yml
 注：保证配置里面的端口号与docker-compose.yml里面的port对应上。
 
 #### 一般建议：
+```
 data_1：
 http.port: 9200
 transport.tcp.port: 9300
@@ -60,6 +61,7 @@ http.port: 9211
 transport.tcp.port: 9311
 
 同时还需要修改discovery.zen.ping.unicast.hosts为master的 IP地址 + tcp.port
+```
 
 
 ## QA
