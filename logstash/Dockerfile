@@ -4,7 +4,7 @@
 
 FROM ubuntu:xenial
 
-ADD ./common/sources.list /etc/apt/sources.list
+COPY ./common/sources.list /etc/apt/sources.list
 RUN apt-get -y update --fix-missing && apt-get -y update
 
 # JAVA环境
