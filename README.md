@@ -23,6 +23,14 @@ $ docker search logstash
 $ docker pull logstash:6.4.3
 ```
 
+# 创建本地数据目录
+```
+$ sudo mkdir -p /var/lib/es
+$ sudo chmod -R 777 /var/lib/es/
+$ cd /var/lib/es/
+$ mkdir -p master1 master2 data1 data2
+```
+
 # 系统配置
 ```
 $ sudo vi /etc/sysctl.conf
