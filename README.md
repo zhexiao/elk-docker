@@ -44,7 +44,7 @@ version: "3.4"
 
 services:
   elasticsearch1:
-    image: docker.elastic.co/elasticsearch/elasticsearch:6.4.3
+    image: elasticsearch:6.4.3
     environment:
       - cluster.name=docker-cluster
       - bootstrap.memory_lock=true
@@ -52,14 +52,14 @@ services:
       - node.master=true
       - node.data=false
       - discovery.zen.minimum_master_nodes=2
-      - "ES_JAVA_OPTS=-Xms2g -Xmx2g"
+      - "ES_JAVA_OPTS=-Xms1g -Xmx1g"
     volumes:
       - /var/lib/es/master1:/usr/share/elasticsearch/data
     networks:
       - esnet
 
   elasticsearch2:
-    image: docker.elastic.co/elasticsearch/elasticsearch:6.4.3
+    image: elasticsearch:6.4.3
     environment:
       - cluster.name=docker-cluster
       - bootstrap.memory_lock=true
@@ -67,14 +67,14 @@ services:
       - node.master=true
       - node.data=false
       - discovery.zen.minimum_master_nodes=2
-      - "ES_JAVA_OPTS=-Xms2g -Xmx2g"
+      - "ES_JAVA_OPTS=-Xms1g -Xmx1g"
     volumes:
       - /var/lib/es/master2:/usr/share/elasticsearch/data
     networks:
       - esnet
 
   elasticsearch3:
-    image: docker.elastic.co/elasticsearch/elasticsearch:6.4.3
+    image: elasticsearch:6.4.3
     ports:
       - 9200:9200
     environment:
@@ -85,14 +85,14 @@ services:
       - node.data=true
       - discovery.zen.minimum_master_nodes=2
       - discovery.zen.ping.unicast.hosts=elasticsearch1,elasticsearch2
-      - "ES_JAVA_OPTS=-Xms2g -Xmx2g"
+      - "ES_JAVA_OPTS=-Xms1g -Xmx1g"
     volumes:
       - /var/lib/es/data1:/usr/share/elasticsearch/data
     networks:
       - esnet
 
   elasticsearch4:
-    image: docker.elastic.co/elasticsearch/elasticsearch:6.4.3
+    image: elasticsearch:6.4.3
     ports:
       - 9201:9200
     environment:
@@ -103,14 +103,14 @@ services:
       - node.data=true
       - discovery.zen.minimum_master_nodes=2
       - discovery.zen.ping.unicast.hosts=elasticsearch1,elasticsearch2
-      - "ES_JAVA_OPTS=-Xms2g -Xmx2g"
+      - "ES_JAVA_OPTS=-Xms1g -Xmx1g"
     volumes:
       - /var/lib/es/data2:/usr/share/elasticsearch/data
     networks:
       - esnet
 
   kibana:
-    image: docker.elastic.co/kibana/kibana:6.4.3
+    image: kibana:6.4.3
     ports:
       - 5601:5601
     environment:
