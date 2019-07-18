@@ -1,155 +1,128 @@
 # elk-docker
-# 下载包
-创建镜像前，需要先下载对应的tar.gz包。
-- elasticsearch 6.4：https://artifacts.elastic.co/downloads/elasticsearch/elasticsearch-6.4.0.tar.gz
-- kibana 6.4.1：https://artifacts.elastic.co/downloads/kibana/kibana-6.4.1-linux-x86_64.tar.gz
-- logstash 6.4.1：https://artifacts.elastic.co/downloads/logstash/logstash-6.4.1.tar.gz
 
-# elasticsearch
-## 创建目录（默认创建2主节点2数据节点）
+# Elasticsearch
 ```
-$ sudo mkdir -p /opt/elasticsearch/data
-$ cd /opt/elasticsearch/data
-$ sudo mkdir -p master1 master2 data1 data2
+$ docker search elasticsearch
+$ docker pull elasticsearch:6.4.3
 
-$ sudo tar -zxvf elasticsearch-6.4.0.tar.gz -C /opt/elasticsearch/
+# 测试
+$ docker run -p 8200:9200 -p 8300:9300 -e "discovery.type=single-node" elasticsearch:6.4.3
 
-# 这里如果不改777，则挂载到container里面就会缺少访问权限
-$ sudo chmod -R 777 /opt/elasticsearch
+$ curl localhost:8200
 ```
 
-## 创建image
+# Kibana
 ```
-$ cd elk-docker
-$ docker build -t elasticsearch -f elasticsearch/Dockerfile .
-```
-
-## 配置文件
-```
-$ cp elasticsearch_data.yml.example elasticsearch_data1.yml
-$ cp elasticsearch_data.yml.example elasticsearch_data2.yml
-
-$ cp elasticsearch_master.yml.example elasticsearch_master1.yml
-$ cp elasticsearch_master.yml.example elasticsearch_master2.yml
-```
-按需修改elasticsearch/conf里面的配置，需要注意的有：
-1. cluster.name
-2. node.name
-3. http.port
-4. transport.tcp.port
-5. discovery.zen.ping.unicast.hosts
-6. discovery.zen.minimum_master_nodes
-
-注：保证配置里面的端口号与docker-compose.yml里面的port对应上。
-
-#### 一般建议：
-```
-data_1：
-http.port: 9200
-transport.tcp.port: 9300
-
-data_2:
-http.port: 9201
-transport.tcp.port: 9301
-
-master_1:
-http.port: 9210
-transport.tcp.port: 9310
-
-master_2:
-http.port: 9211
-transport.tcp.port: 9311
-
-同时还需要修改discovery.zen.ping.unicast.hosts为master的 IP地址 + tcp.port
+$ docker search kibana
+$ docker pull kibana:6.4.3
 ```
 
+# Logstash
+```
+$ docker search logstash
+$ docker pull logstash:6.4.3
+```
 
-## QA
-如果启动出现错误：
-max virtual memory areas vm.max_map_count [65530] is too low, increase to at least [262144]
-
-解决方法：在host主机执行下面的操作
+# 系统配置
 ```
 $ sudo vi /etc/sysctl.conf
-"""
-vm.max_map_count=524288
-"""
+'''
+vm.max_map_count=262144
+'''
 
-$ sudo sysctl -p
+$ sudo vi /etc/systemd/system.conf
+'''
+DefaultLimitMEMLOCK=infinity
+'''
+
+$ grep vm.max_map_count /etc/sysctl.conf
 ```
 
-# kibana
-## 创建目录
+# 启动
 ```
-$ sudo mkdir -p /opt/kibana
+version: "3.4"
 
-# 这里如果不改777，则挂载到container里面就会缺少访问权限
-$ sudo chmod -R 777 /opt/kibana
-$ tar -zxvf kibana-6.4.1-linux-x86_64.tar.gz -C /opt/kibana/
-```
+services:
+  elasticsearch1:
+    image: docker.elastic.co/elasticsearch/elasticsearch:6.4.3
+    environment:
+      - cluster.name=docker-cluster
+      - bootstrap.memory_lock=true
+      - node.name=node-master1
+      - node.master=true
+      - node.data=false
+      - discovery.zen.minimum_master_nodes=2
+      - "ES_JAVA_OPTS=-Xms2g -Xmx2g"
+    volumes:
+      - /var/lib/es/master1:/usr/share/elasticsearch/data
+    networks:
+      - esnet
 
-## 创建image
-```
-$ cd elk-docker
-$ docker build -t kibana -f kibana/Dockerfile .
-```
+  elasticsearch2:
+    image: docker.elastic.co/elasticsearch/elasticsearch:6.4.3
+    environment:
+      - cluster.name=docker-cluster
+      - bootstrap.memory_lock=true
+      - node.name=node-master2
+      - node.master=true
+      - node.data=false
+      - discovery.zen.minimum_master_nodes=2
+      - "ES_JAVA_OPTS=-Xms2g -Xmx2g"
+    volumes:
+      - /var/lib/es/master2:/usr/share/elasticsearch/data
+    networks:
+      - esnet
 
-## 配置文件
-```
-$ cp kibana.yml.example kibana.yml
-```
-按需修改kibana/conf里面的配置，需要注意的有：
-1. server.host
-2. elasticsearch.url
+  elasticsearch3:
+    image: docker.elastic.co/elasticsearch/elasticsearch:6.4.3
+    ports:
+      - 9200:9200
+    environment:
+      - cluster.name=docker-cluster
+      - bootstrap.memory_lock=true
+      - node.name=node-data1
+      - node.master=false
+      - node.data=true
+      - discovery.zen.minimum_master_nodes=2
+      - discovery.zen.ping.unicast.hosts=elasticsearch1,elasticsearch2
+      - "ES_JAVA_OPTS=-Xms2g -Xmx2g"
+    volumes:
+      - /var/lib/es/data1:/usr/share/elasticsearch/data
+    networks:
+      - esnet
 
-注：保证配置里面的端口号与docker-compose.yml里面的port对应上。
+  elasticsearch4:
+    image: docker.elastic.co/elasticsearch/elasticsearch:6.4.3
+    ports:
+      - 9201:9200
+    environment:
+      - cluster.name=docker-cluster
+      - bootstrap.memory_lock=true
+      - node.name=node-data2
+      - node.master=false
+      - node.data=true
+      - discovery.zen.minimum_master_nodes=2
+      - discovery.zen.ping.unicast.hosts=elasticsearch1,elasticsearch2
+      - "ES_JAVA_OPTS=-Xms2g -Xmx2g"
+    volumes:
+      - /var/lib/es/data2:/usr/share/elasticsearch/data
+    networks:
+      - esnet
 
-# logstash
-## 创建目录
-```
-$ sudo mkdir -p /opt/logstash
+  kibana:
+    image: docker.elastic.co/kibana/kibana:6.4.3
+    ports:
+      - 5601:5601
+    environment:
+      ELASTICSEARCH_URL: http://elasticsearch3:9200
+    depends_on:
+      - elasticsearch1
+      - elasticsearch2
+      - elasticsearch3
+      - elasticsearch4
+    networks:
+      - esnet
 
-# 这里如果不改777，则挂载到container里面就会缺少访问权限
-$ sudo chmod -R 777 /opt/logstash
-$ tar -zxvf logstash-6.4.1.tar.gz -C /opt/logstash/
-
-# 存放一些例如es的模板
-$ cd logstash-6.4.1
-$ mkdir tpl
-```
-
-## 创建image
-```
-$ cd elk-docker
-$ docker build -t logstash -f logstash/Dockerfile .
-```
-
-## 配置文件
-假设我们选择的配置文件是kafka_to_es
-```
-$ cp kafka_to_es.conf.example kafka_to_es.conf
-```
-1. 修改kakfa服务bootstrap_servers等配置
-2. 修改Elasticsearch服务hosts等配置
-3. 修改 docker-compose.yml里面的参数 &logstash-volumes 和  &logstash-run，确认配置文件名
-
-## 插件安装
-```
-$ sudo apt-get install -y openjdk-8-jdk apt-transport-https
-$ cd /opt/logstash/logstash-6.4.1
-
-# 安装kafka input插件
-$ ./bin/logstash-plugin install logstash-input-kafka
-
-# 安装es output插件
-$ ./bin/logstash-plugin install logstash-output-elasticsearch
-```
-
-# 部署
-```
-$ docker swarm init
-$ docker stack deploy -c docker-compose.yml elk_v1
-
-# 移除部署
-$ docker stack rm elk_v1
+networks:
+  esnet:
 ```
