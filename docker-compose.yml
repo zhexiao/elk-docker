@@ -1,125 +1,85 @@
-#
-# 测试：docker-compose up
-#
 version: "3.4"
 
-# (https://docs.docker.com/compose/compose-file/#extension-fields)
-x-logging:
-  &default-logging
-  driver: json-file
-  options:
-    max-size: '12m'
-    max-file: '5'
-
-x-deploy:
-  &default-deploy
-  restart_policy:
-    condition: any
-    delay: 5s
-
-x-volumes:
-  &es-home-dir
-  /opt/elasticsearch/elasticsearch-6.4.0:/home/elasticsearch
-
-x-command:
-  &es-run
-  /home/elasticsearch/bin/elasticsearch
-
-x-volumes:
-  &kibana-volumes
-  - /opt/kibana/kibana-6.4.1-linux-x86_64:/home/kibana
-  - ./kibana/conf/kibana.yml:/home/kibana/config/kibana.yml
-
-x-command:
-  &kibana-run
-  /home/kibana/bin/kibana
-
-x-volumes:
-  &logstash-volumes
-  - /opt/logstash/logstash-6.4.1:/home/logstash
-  - ./logstash/conf/kafka_to_es.conf:/home/logstash/config/kafka_to_es.conf
-
-x-command:
-  &logstash-run
-  /home/logstash/bin/logstash -f /home/logstash/config/kafka_to_es.conf
-
 services:
-  elasticsearch_master1:
-    image: elasticsearch:latest
-    ports:
-      - 9210:9210
-      - 9310:9310
-    command: *es-run
+  elasticsearch1:
+    image: elasticsearch:6.4.3
+    environment:
+      - cluster.name=docker-cluster
+      - bootstrap.memory_lock=true
+      - node.name=node-master1
+      - node.master=true
+      - node.data=false
+      - discovery.zen.minimum_master_nodes=2
+      - "ES_JAVA_OPTS=-Xms1g -Xmx1g"
     volumes:
-      - *es-home-dir
-      - ./elasticsearch/conf/elasticsearch_master1.yml:/home/elasticsearch/config/elasticsearch.yml
-      - /opt/elasticsearch/data/master1:/home/elasticsearch/data
-    deploy: *default-deploy
-    logging: *default-logging
+      - /var/lib/es/master1:/usr/share/elasticsearch/data
+    networks:
+      - esnet
 
-  elasticsearch_master2:
-    image: elasticsearch:latest
-    ports:
-      - 9211:9211
-      - 9311:9311
-    command: *es-run
+  elasticsearch2:
+    image: elasticsearch:6.4.3
+    environment:
+      - cluster.name=docker-cluster
+      - bootstrap.memory_lock=true
+      - node.name=node-master2
+      - node.master=true
+      - node.data=false
+      - discovery.zen.minimum_master_nodes=2
+      - "ES_JAVA_OPTS=-Xms1g -Xmx1g"
     volumes:
-      - *es-home-dir
-      - ./elasticsearch/conf/elasticsearch_master2.yml:/home/elasticsearch/config/elasticsearch.yml
-      - /opt/elasticsearch/data/master2:/home/elasticsearch/data
-    deploy: *default-deploy
-    logging: *default-logging
+      - /var/lib/es/master2:/usr/share/elasticsearch/data
+    networks:
+      - esnet
 
-  elasticsearch_data1:
-    image: elasticsearch:latest
+  elasticsearch3:
+    image: elasticsearch:6.4.3
     ports:
       - 9200:9200
-      - 9300:9300
-    command: *es-run
+    environment:
+      - cluster.name=docker-cluster
+      - bootstrap.memory_lock=true
+      - node.name=node-data1
+      - node.master=false
+      - node.data=true
+      - discovery.zen.minimum_master_nodes=2
+      - discovery.zen.ping.unicast.hosts=elasticsearch1,elasticsearch2
+      - "ES_JAVA_OPTS=-Xms1g -Xmx1g"
     volumes:
-      - *es-home-dir
-      - ./elasticsearch/conf/elasticsearch_data1.yml:/home/elasticsearch/config/elasticsearch.yml
-      - /opt/elasticsearch/data/data1:/home/elasticsearch/data
-    deploy: *default-deploy
-    logging: *default-logging
+      - /var/lib/es/data1:/usr/share/elasticsearch/data
+    networks:
+      - esnet
 
-  elasticsearch_data2:
-    image: elasticsearch:latest
+  elasticsearch4:
+    image: elasticsearch:6.4.3
     ports:
-      - 9201:9201
-      - 9301:9301
-    command: *es-run
+      - 9201:9200
+    environment:
+      - cluster.name=docker-cluster
+      - bootstrap.memory_lock=true
+      - node.name=node-data2
+      - node.master=false
+      - node.data=true
+      - discovery.zen.minimum_master_nodes=2
+      - discovery.zen.ping.unicast.hosts=elasticsearch1,elasticsearch2
+      - "ES_JAVA_OPTS=-Xms1g -Xmx1g"
     volumes:
-      - *es-home-dir
-      - ./elasticsearch/conf/elasticsearch_data2.yml:/home/elasticsearch/config/elasticsearch.yml
-      - /opt/elasticsearch/data/data2:/home/elasticsearch/data
-    deploy: *default-deploy
-    logging: *default-logging
+      - /var/lib/es/data2:/usr/share/elasticsearch/data
+    networks:
+      - esnet
 
   kibana:
-    image: kibana:latest
+    image: kibana:6.4.3
     ports:
       - 5601:5601
-    command: *kibana-run
-    volumes: *kibana-volumes
-    deploy: *default-deploy
-    logging: *default-logging
+    environment:
+      ELASTICSEARCH_URL: http://elasticsearch3:9200
     depends_on:
-      - elasticsearch_master1
-      - elasticsearch_master2
-      - elasticsearch_data1
-      - elasticsearch_data2
+      - elasticsearch1
+      - elasticsearch2
+      - elasticsearch3
+      - elasticsearch4
+    networks:
+      - esnet
 
-  logstash:
-    image: logstash:latest
-    ports:
-      - 9600:9600
-    command: *logstash-run
-    volumes: *logstash-volumes
-    deploy: *default-deploy
-    logging: *default-logging
-    depends_on:
-      - elasticsearch_master1
-      - elasticsearch_master2
-      - elasticsearch_data1
-      - elasticsearch_data2
+networks:
+  esnet:
