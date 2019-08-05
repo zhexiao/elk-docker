@@ -10,7 +10,7 @@ services:
       - node.master=true
       - node.data=false
       - discovery.zen.minimum_master_nodes=2
-      - "ES_JAVA_OPTS=-Xms1g -Xmx1g"
+      - "ES_JAVA_OPTS=-Xms1g -Xmx1g -Des.insecure.allow.root=true"
     volumes:
       - /var/lib/es/master1:/usr/share/elasticsearch/data
     networks:
@@ -25,7 +25,7 @@ services:
       - node.master=true
       - node.data=false
       - discovery.zen.minimum_master_nodes=2
-      - "ES_JAVA_OPTS=-Xms1g -Xmx1g"
+      - "ES_JAVA_OPTS=-Xms1g -Xmx1g -Des.insecure.allow.root=true"
     volumes:
       - /var/lib/es/master2:/usr/share/elasticsearch/data
     networks:
@@ -43,7 +43,7 @@ services:
       - node.data=true
       - discovery.zen.minimum_master_nodes=2
       - discovery.zen.ping.unicast.hosts=elasticsearch1,elasticsearch2
-      - "ES_JAVA_OPTS=-Xms1g -Xmx1g"
+      - "ES_JAVA_OPTS=-Xms1g -Xmx1g -Des.insecure.allow.root=true"
     volumes:
       - /var/lib/es/data1:/usr/share/elasticsearch/data
     networks:
@@ -61,7 +61,7 @@ services:
       - node.data=true
       - discovery.zen.minimum_master_nodes=2
       - discovery.zen.ping.unicast.hosts=elasticsearch1,elasticsearch2
-      - "ES_JAVA_OPTS=-Xms1g -Xmx1g"
+      - "ES_JAVA_OPTS=-Xms1g -Xmx1g -Des.insecure.allow.root=true"
     volumes:
       - /var/lib/es/data2:/usr/share/elasticsearch/data
     networks:
