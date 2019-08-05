@@ -29,6 +29,9 @@ $ sudo mkdir -p /var/lib/es
 $ sudo chmod -R 777 /var/lib/es/
 $ cd /var/lib/es/
 $ mkdir -p master1 master2 data1 data2
+
+# 按需
+$ sudo chmod -R 777 /var/lib/es/
 ```
 
 # 系统配置
