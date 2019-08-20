@@ -13,6 +13,7 @@ services:
       - "ES_JAVA_OPTS=-Xms1g -Xmx1g -Des.insecure.allow.root=true"
     volumes:
       - /var/lib/es/master1:/usr/share/elasticsearch/data
+    restart: always
     networks:
       - esnet
 
@@ -28,8 +29,9 @@ services:
       - "ES_JAVA_OPTS=-Xms1g -Xmx1g -Des.insecure.allow.root=true"
     volumes:
       - /var/lib/es/master2:/usr/share/elasticsearch/data
+    restart: always
     networks:
-      - esnet
+      - mynet1
 
   elasticsearch3:
     image: elasticsearch:6.4.3
@@ -46,8 +48,9 @@ services:
       - "ES_JAVA_OPTS=-Xms1g -Xmx1g -Des.insecure.allow.root=true"
     volumes:
       - /var/lib/es/data1:/usr/share/elasticsearch/data
+    restart: always
     networks:
-      - esnet
+      - mynet1
 
   elasticsearch4:
     image: elasticsearch:6.4.3
@@ -64,8 +67,9 @@ services:
       - "ES_JAVA_OPTS=-Xms1g -Xmx1g -Des.insecure.allow.root=true"
     volumes:
       - /var/lib/es/data2:/usr/share/elasticsearch/data
+    restart: always
     networks:
-      - esnet
+      - mynet1
 
   kibana:
     image: kibana:6.4.3
@@ -78,8 +82,10 @@ services:
       - elasticsearch2
       - elasticsearch3
       - elasticsearch4
+    restart: always
     networks:
-      - esnet
+      - mynet1
 
 networks:
-  esnet:
+  mynet1:
+    driver: bridge
