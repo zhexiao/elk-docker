@@ -1,0 +1,22 @@
+version: "3.4"
+
+services:
+  elasticsearch1:
+    image: elasticsearch:6.4.3
+    environment:
+      - cluster.name=docker-cluster
+      - bootstrap.memory_lock=true
+      - node.name=node-master1
+      - node.master=true
+      - node.data=false
+      - discovery.zen.minimum_master_nodes=2
+      - "ES_JAVA_OPTS=-Xms1g -Xmx1g -Des.insecure.allow.root=true"
+    volumes:
+      - /var/lib/es/master1:/usr/share/elasticsearch/data
+    restart: always
+    networks:
+      - esnet
+
+networks:
+  mynet1:
+    driver: bridge

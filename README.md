@@ -19,12 +19,6 @@ $ docker search kibana
 $ docker pull kibana:6.4.3
 ```
 
-### Logstash
-```
-$ docker search logstash
-$ docker pull logstash:6.4.3
-```
-
 # 系统配置
 ```
 $ sudo vi /etc/sysctl.conf
@@ -40,7 +34,7 @@ DefaultLimitMEMLOCK=infinity
 $ grep vm.max_map_count /etc/sysctl.conf
 ```
 
-# 启动
+# Es+Kibana启动
 ### 单机启动
 ```
 $ sudo mkdir -p /es/single_data
@@ -55,4 +49,9 @@ $ sudo mkdir -p /es/master1 /es/master2 /es/data1 /es/data2
 $ sudo chmod -R 777 /es
 
 $ docker-compose -f docker-compose.yml.cluster up -d
+```
+
+# Logstash启动
+```
+docker run --rm -it -v ~/elk-docker/logstash_pipeline/:/usr/share/logstash/pipeline/ logstash:6.4.3
 ```
