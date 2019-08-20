@@ -1,21 +1,19 @@
 version: "3.4"
 
+x-logging:
+  &default-logging
+  driver: json-file
+  options:
+    max-size: '12m'
+    max-file: '5'
+
 services:
-  elasticsearch1:
-    image: elasticsearch:6.4.3
-    environment:
-      - cluster.name=docker-cluster
-      - bootstrap.memory_lock=true
-      - node.name=node-master1
-      - node.master=true
-      - node.data=false
-      - discovery.zen.minimum_master_nodes=2
-      - "ES_JAVA_OPTS=-Xms1g -Xmx1g -Des.insecure.allow.root=true"
-    volumes:
-      - /var/lib/es/master1:/usr/share/elasticsearch/data
+  mylogstash:
+    image: mylogstash
     restart: always
     networks:
-      - esnet
+      - mynet1
+    logging: *default-logging
 
 networks:
   mynet1:
