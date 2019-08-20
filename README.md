@@ -53,6 +53,14 @@ $ docker-compose -f docker-compose.cluster.yml up -d
 
 # Logstash启动
 ```
+$ cp logstash/default.conf.example logstash/default.conf
+$ cp logstash/logstash.yml.example logstash/logstash.yml
+
 $ docker build -t mylogstash -f Dockerfile-logstash .
 $ docker-compose -f docker-compose.logstash.yml up -d
+```
+
+### 测试
+```
+$ python3 python3 logstash/udp_client_test.py
 ```
