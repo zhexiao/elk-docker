@@ -59,6 +59,8 @@ $ cp logstash/default.conf.example logstash/default.conf
 $ cp logstash/logstash.yml.example logstash/logstash.yml
 
 $ docker build -t mylogstash -f Dockerfile-logstash .
+
+$ cp docker-compose.logstash.yml.example docker-compose.logstash.yml 
 $ docker-compose -f docker-compose.logstash.yml up -d
 ```
 
