@@ -15,7 +15,7 @@ services:
       - /es/master1:/usr/share/elasticsearch/data
     restart: always
     networks:
-      - esnet
+      - mynet1
 
   elasticsearch2:
     image: elasticsearch:6.4.3

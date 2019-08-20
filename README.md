@@ -27,6 +27,8 @@ $ docker pull logstash:6.4.3
 ```
 $ sudo mkdir -p /es/single_data
 $ sudo chmod -R 777 /es/single_data
+
+$ docker-compose -f docker-compose.yml.single up -d
 ```
 
 # 集群启动

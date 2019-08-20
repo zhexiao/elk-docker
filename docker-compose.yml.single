@@ -13,7 +13,7 @@ services:
       - /es/single_data:/usr/share/elasticsearch/data
     restart: always
     networks:
-      - esnet
+      - mynet1
 
   kibana:
     image: kibana:6.4.3
