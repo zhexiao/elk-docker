@@ -52,7 +52,7 @@ $ docker-compose -f docker-compose.cluster.yml up -d
 ```
 
 # Logstash启动
-注意：启动logstash需要配合上面ES的单机启动（集群启动需要修改logstash.yml文件）
+注意：启动logstash需要配合上面ES的单机启动（集群启动需要修改logstash.yml文件），强烈建议启动前查看一下default.conf。
 
 ```
 $ cp logstash/default.conf.example logstash/default.conf
