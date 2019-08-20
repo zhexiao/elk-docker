@@ -14,6 +14,8 @@ services:
     networks:
       - mynet1
     logging: *default-logging
+    external_links:
+      - es_single
 
 networks:
   mynet1:
