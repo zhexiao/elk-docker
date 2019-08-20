@@ -40,7 +40,7 @@ $ grep vm.max_map_count /etc/sysctl.conf
 $ sudo mkdir -p /es/single_data
 $ sudo chmod -R 777 /es/single_data
 
-$ docker-compose -f docker-compose.yml.single up -d
+$ docker-compose -f docker-compose.single.yml up -d
 ```
 
 ### 集群启动
@@ -48,11 +48,11 @@ $ docker-compose -f docker-compose.yml.single up -d
 $ sudo mkdir -p /es/master1 /es/master2 /es/data1 /es/data2
 $ sudo chmod -R 777 /es
 
-$ docker-compose -f docker-compose.yml.cluster up -d
+$ docker-compose -f docker-compose.cluster.yml up -d
 ```
 
 # Logstash启动
 ```
 $ docker build -t mylogstash -f Dockerfile-logstash .
-$ docker-compose -f docker-compose-logstash.yml up -d
+$ docker-compose -f docker-compose.logstash.yml up -d
 ```
