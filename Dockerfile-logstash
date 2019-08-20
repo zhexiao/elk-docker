@@ -6,3 +6,6 @@ FROM logstash:6.4.3
 ENV LOGSTASH_HOME=/usr/share/logstash
 
 ADD ./logstash/default.conf ${LOGSTASH_HOME}/config/
+ADD ./logstash/logstash.yml ${LOGSTASH_HOME}/config/
+
+

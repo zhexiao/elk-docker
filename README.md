@@ -53,5 +53,5 @@ $ docker-compose -f docker-compose.yml.cluster up -d
 
 # Logstash启动
 ```
-docker run --rm -it -v ~/elk-docker/logstash_pipeline/:/usr/share/logstash/pipeline/ logstash:6.4.3
+$ docker build -t mylogstash -f Dockerfile-logstash .
 ```
