@@ -9,6 +9,7 @@ x-logging:
 
 services:
   mylogstash:
+    container_name: mylogstash
     image: mylogstash
     # 端口由default.conf里面的配置决定
     ports:
