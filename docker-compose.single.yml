@@ -11,6 +11,8 @@ services:
   es_single:
     image: elasticsearch:6.4.3
     container_name: es_single
+    ports:
+      - 9200:9200
     environment:
       - bootstrap.memory_lock=true
       - discovery.type=single-node
