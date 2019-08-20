@@ -64,5 +64,18 @@ $ docker-compose -f docker-compose.logstash.yml up -d
 
 ### 测试
 ```
-$ python3 python3 logstash/udp_client_test.py
+$ python3 logstash/udp_client_test.py
+```
+打印：
+```
+mylogstash_1  | {
+mylogstash_1  |           "tags" => [
+mylogstash_1  |         [0] "src_ip_stats"
+mylogstash_1  |     ],
+mylogstash_1  |           "host" => "172.23.0.1",
+mylogstash_1  |     "@timestamp" => 2019-08-20T09:36:32.284Z,
+mylogstash_1  |           "name" => "zhexxx",
+mylogstash_1  |            "msg" => "Hello World! 123444",
+mylogstash_1  |       "@version" => "1"
+mylogstash_1  | }
 ```
