@@ -1,5 +1,12 @@
 version: "3.4"
 
+x-logging:
+  &default-logging
+  driver: json-file
+  options:
+    max-size: '12m'
+    max-file: '5'
+
 services:
   es_single:
     image: elasticsearch:6.4.3
@@ -12,6 +19,7 @@ services:
     volumes:
       - /es/single_data:/usr/share/elasticsearch/data
     restart: always
+    logging: *default-logging
     networks:
       - mynet1
 
@@ -24,6 +32,7 @@ services:
     depends_on:
       - es_single
     restart: always
+    logging: *default-logging
     networks:
       - mynet1
 
