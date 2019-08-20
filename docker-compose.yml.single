@@ -5,11 +5,12 @@ services:
     image: elasticsearch:6.4.3
     environment:
       - bootstrap.memory_lock=true
+      - discovery.type=single-node
       - node.master=true
       - node.data=true
       - "ES_JAVA_OPTS=-Xms1g -Xmx1g -Des.insecure.allow.root=true"
     volumes:
-      - /var/lib/es/es_single:/usr/share/elasticsearch/data
+      - /es/single_data:/usr/share/elasticsearch/data
     restart: always
     networks:
       - esnet
