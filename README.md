@@ -54,4 +54,5 @@ $ docker-compose -f docker-compose.yml.cluster up -d
 # Logstash启动
 ```
 $ docker build -t mylogstash -f Dockerfile-logstash .
+$ docker-compose -f docker-compose-logstash.yml up -d
 ```

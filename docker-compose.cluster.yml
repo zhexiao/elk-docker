@@ -10,6 +10,7 @@ x-logging:
 services:
   elasticsearch1:
     image: elasticsearch:6.4.3
+    container_name: es1
     environment:
       - cluster.name=docker-cluster
       - bootstrap.memory_lock=true
@@ -27,6 +28,7 @@ services:
 
   elasticsearch2:
     image: elasticsearch:6.4.3
+    container_name: es2
     environment:
       - cluster.name=docker-cluster
       - bootstrap.memory_lock=true
@@ -44,6 +46,7 @@ services:
 
   elasticsearch3:
     image: elasticsearch:6.4.3
+    container_name: es3
     ports:
       - 9200:9200
     environment:
@@ -64,6 +67,7 @@ services:
 
   elasticsearch4:
     image: elasticsearch:6.4.3
+    container_name: es4
     ports:
       - 9201:9200
     environment:
@@ -84,6 +88,7 @@ services:
 
   kibana:
     image: kibana:6.4.3
+    container_name: kb1
     ports:
       - 5601:5601
     environment:
