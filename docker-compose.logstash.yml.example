@@ -25,6 +25,9 @@ services:
     logging: *default-logging
     external_links:
       - essingle
+      - kf1
+      - kf2
+      - kf3
 
 networks:
   mynet1:
