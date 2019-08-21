@@ -17,6 +17,9 @@ services:
       - "21561:21561/udp"
       - "21562:21562/udp"
     restart: always
+    volumes:
+      - ./logstash/default.conf:/usr/share/logstash/config/default.conf
+      - ./logstash/logstash.yml:/usr/share/logstash/config/logstash.yml
     networks:
       - mynet1
     logging: *default-logging
